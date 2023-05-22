@@ -1,3 +1,4 @@
+// commit
 import Player from '@vimeo/player';
 import throttle from 'lodash.throttle';
 
@@ -20,3 +21,4 @@ function setCurrentTime() {
     player.setCurrentTime(currentTime);
   }
 }
+// commit

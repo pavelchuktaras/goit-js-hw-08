@@ -1,3 +1,5 @@
+// commit
+
 import throttle from 'lodash.throttle';
 
 const refs = {
@@ -72,3 +74,4 @@ function saveTexteriaMsg() {
 function saveFormData() {
   localStorage.setItem('feedback-form-state', JSON.stringify(formData));
 }
+// commit
