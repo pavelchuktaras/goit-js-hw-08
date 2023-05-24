@@ -3,7 +3,7 @@ import Player from '@vimeo/player';
 import throttle from 'lodash.throttle';
 
 const iframe = document.querySelector('iframe');
-const player = new Player('vimeo-player');
+const player = new Player(iframe);
 
 function playerCurrentTime(event) {
   const currentTime = event.seconds;
@@ -21,4 +21,3 @@ function setCurrentTime() {
     player.setCurrentTime(currentTime);
   }
 }
-// commit

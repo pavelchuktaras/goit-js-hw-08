@@ -1,5 +1,3 @@
-// commit
-
 import throttle from 'lodash.throttle';
 
 const refs = {
@@ -8,12 +6,9 @@ const refs = {
   form: document.querySelector('form'),
 };
 
-saveinputsMsg();
-saveTexteriaMsg();
-
 let formData = {
-  email: '',
-  message: '',
+  email: refs.input.value,
+  message: refs.message.value,
 };
 
 refs.input.addEventListener('input', throttle(inputChange, 500));
@@ -29,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const { email, message } = JSON.parse(savedFormData);
     refs.input.value = email;
     refs.message.value = message;
+    formData.email = email;
+    formData.message = message;
   }
 });
 
@@ -46,32 +43,17 @@ function inputChange(evt) {
 
 function handleSubmit(evt) {
   evt.preventDefault();
-  evt.currentTarget.reset();
-  localStorage.removeItem('feedback-form-state');
-  if (formData.email === '' || formData.message === '') {
+  const formData = {
+    email: refs.input.value,
+    message: refs.message.value,
+  };
+  if (refs.input.value.trim() === '' || refs.message.value.trim() === '')
     return alert('Введіть дані!');
-  } else {
-    console.log(formData);
-  }
-}
-
-function saveinputsMsg() {
-  const inputMsg = localStorage.getItem('feedback-form-state');
-
-  if (inputMsg) {
-    refs.input.value = inputMsg;
-  }
-}
-
-function saveTexteriaMsg() {
-  const texteriaMsg = localStorage.getItem('feedback-form-state');
-
-  if (texteriaMsg) {
-    refs.input.value = texteriaMsg;
-  }
+  console.log(formData);
+  localStorage.removeItem('feedback-form-state');
+  refs.form.reset();
 }
 
 function saveFormData() {
   localStorage.setItem('feedback-form-state', JSON.stringify(formData));
 }
-// commit
