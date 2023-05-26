@@ -6,16 +6,13 @@ const refs = {
   form: document.querySelector('form'),
 };
 
-let formData = {
-  email: refs.input.value,
-  message: refs.message.value,
-};
-
-refs.input.addEventListener('input', throttle(inputChange, 500));
-
-refs.message.addEventListener('input', throttle(massageTexteria, 500));
-
-refs.form.addEventListener('submit', handleSubmit);
+function saveFormData() {
+  let formData = {
+    email: refs.input.value,
+    message: refs.message.value,
+  };
+  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const savedFormData = localStorage.getItem('feedback-form-state');
@@ -24,36 +21,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const { email, message } = JSON.parse(savedFormData);
     refs.input.value = email;
     refs.message.value = message;
-    formData.email = email;
-    formData.message = message;
+  } else {
+    refs.input.value = '';
+    refs.message.value = '';
   }
 });
 
-function massageTexteria(evt) {
-  const targetMassage = evt.target.value;
-  formData.message = targetMassage;
-  saveFormData();
-}
-
-function inputChange(evt) {
-  const targetInput = evt.target.value;
-  formData.email = targetInput;
-  saveFormData();
-}
-
 function handleSubmit(evt) {
   evt.preventDefault();
-  const formData = {
+  let formData = {
     email: refs.input.value,
     message: refs.message.value,
   };
-  if (refs.input.value.trim() === '' || refs.message.value.trim() === '')
+  if (refs.input.value.trim() === '' || refs.message.value.trim() === '') {
     return alert('Введіть дані!');
-  console.log(formData);
-  localStorage.removeItem('feedback-form-state');
-  refs.form.reset();
+  } else {
+    console.log(formData);
+    localStorage.removeItem('feedback-form-state');
+    refs.form.reset();
+  }
 }
 
-function saveFormData() {
-  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
-}
+const throttledSaveFormData = throttle(saveFormData, 500);
+refs.input.addEventListener('input', throttledSaveFormData);
+refs.message.addEventListener('input', throttledSaveFormData);
+refs.form.addEventListener('submit', handleSubmit);

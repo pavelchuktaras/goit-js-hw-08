@@ -8,7 +8,6 @@ const player = new Player(iframe);
 function playerCurrentTime(event) {
   const currentTime = event.seconds;
   localStorage.setItem('videoplayer-current-time', currentTime);
-  setCurrentTime();
 }
 
 player.on('timeupdate', throttle(playerCurrentTime, 1000));
